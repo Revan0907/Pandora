@@ -296,3 +296,18 @@ height: 100%;
 .ablink:hover {
     background-color: purple;
 }
+
+.text {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    color: #e5e5e5;
+}
+
+.visualiser_container {
+    width: 60%;
+    margin: auto;
+}
+
+.playbutton {
+    background-color: #a82899;
+}

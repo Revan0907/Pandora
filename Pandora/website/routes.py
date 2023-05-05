@@ -2,7 +2,9 @@ from flask import render_template, session, request, redirect, url_for
 from website import app
 import time
 from website.chatbotgen import cbinteraction 
-from website.forms import MessageText
+from flask_gtts import gtts
+from gtts import gTTS
+import os, sys
 
 
 @app.route("/", methods=['GET','POST'])
@@ -19,6 +21,7 @@ def chatpage():
     if ("users-msg" not in session) or ("bot-msg" not in session):
         session["users-msg"] = []
         session["bot-msg"] = []
+        session["audio"] = []
     if request.method == 'POST':
         user_in = request.form.get('user_in')
         return redirect(url_for('chatpageint',user_in = user_in))
@@ -33,7 +36,12 @@ def chatpageint():
         c_msg = res[1]
         session["users-msg"].append(u_msg)
         session["bot-msg"].append(c_msg)
-        return render_template('chatpageint.html',u_msg=u_msg,c_msg=c_msg)
+        tts = gTTS(text = c_msg, slow = False, lang = 'en')
+        savef = "website/static/audio"+str(len(session["bot-msg"])-1)+".mp3"     
+        tts.save(savef)
+        audiof = ("/static/audio")
+        audiof = audiof+str(len(session["bot-msg"])-1)+".mp3"
+        return render_template('chatpageint.html',u_msg=u_msg,c_msg=c_msg,audiof=audiof)
     else: 
         user_in = request.args.get('user_in')
         res = cbinteraction(user_in)
@@ -41,4 +49,9 @@ def chatpageint():
         c_msg = res[1]
         session["users-msg"].append(u_msg)
         session["bot-msg"].append(c_msg)
-        return render_template('chatpageint.html',u_msg=u_msg,c_msg=c_msg)
+        tts = gTTS(text = c_msg, slow = False, lang = 'en')  
+        savef = "website/static/audio"+str(len(session["bot-msg"])-1)+".mp3"     
+        tts.save(savef)
+        audiof = ("/static/audio")
+        audiof = audiof+str(len(session["bot-msg"])-1)+".mp3"
+        return render_template('chatpageint.html',u_msg=u_msg,c_msg=c_msg,audiof=audiof)

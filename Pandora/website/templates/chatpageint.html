@@ -7,11 +7,19 @@
             <div class="chat-messages">
                 {% for i in range(session["users-msg"]|length) %}
                 <div class="user-message">
-                    <span class="message-content">{{ session["users-msg"][i] }}</span>
+                    <span class="message-content">{{ session["users-msg"][i] }}</span> 
                 </div>
 
                 <div class="chatbot-message">
                     <span class="message-content">{{ session["bot-msg"][i] }}</span>
+                    <audio class="playaudio"></audio>
+                    <button type="button" class="playbutton" onclick="playaud('{{audiof}}')">🔊</button>
+                    <script>
+                        function playaud(url){  
+                          new Audio(url).play();
+                        }
+
+                    </script>
                 </div>
                 <br><br>
                 {% endfor %}
